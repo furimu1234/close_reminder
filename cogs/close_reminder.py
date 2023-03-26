@@ -12,14 +12,15 @@ if TYPE_CHECKING:
     from discord import RawThreadUpdateEvent
 
 
-with open("_messages/reminder.yaml", "r") as f:
-    messages = yaml.safe_load(f, Loader=yaml.FullLoader)
+with open("_messages/reminder.yaml", "r", encoding="utf-8") as f:
+    messages = yaml.safe_load(f)
 
 
 class Close_Reminder(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
+    @commands.Cog.listener()
     async def on_raw_thread_update(self, payload: RawThreadUpdateEvent):
         """スレッドが更新されたら発火
 
@@ -30,6 +31,8 @@ class Close_Reminder(commands.Cog):
         payload : RawThreadUpdateEvent
             _description_
         """
+        now = utils.utcnow()
+
         if not (parent := self.bot.get_channel(payload.parent_id)):
             return
 
@@ -39,20 +42,24 @@ class Close_Reminder(commands.Cog):
         if not (thread := payload.thread):
             thread = parent.get_thread(payload.thread_id)
 
+        # 自動アーカイブの時間が一日以上
+        if thread.auto_archive_duration > 1440:
+            return
+
         if not thread.archived:
             return
 
-        limit_time = utils.utcnow() + timedelta(days=1)
+        limit_time = utils.utcnow() + timedelta(**self.bot.limit_time)
 
         # スレッド作成者が投稿した一番新しいメッセージ
         last_message = [
             message
-            async for message in thread.history(limit=1)
+            async for message in thread.history(limit=None)
             if message.author == thread.owner
         ][0]
 
         # 最後に投稿されたメッセージが1日以内だったら、以降の処理をしない(手動クローズと判定)
-        if last_message.created_at <= limit_time:
+        if last_message.created_at > limit_time:
             return
 
         guideline_threads = [thread for thread in parent.threads if thread.flags.pinned]
