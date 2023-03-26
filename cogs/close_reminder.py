@@ -58,9 +58,11 @@ class Close_Reminder(commands.Cog):
             async for message in thread.history(limit=None)
             if message.author == thread.owner
         ][0]
-
         # 最後に投稿されたメッセージが1日以内だったら、以降の処理をしない(手動クローズと判定)
-        if last_message.created_at > limit_time:
+        if last_message.created_at <= limit_time:
+            return
+
+        if last_message.content in [".close"]:
             return
 
         guideline_threads = [thread for thread in parent.threads if thread.flags.pinned]
@@ -75,6 +77,14 @@ class Close_Reminder(commands.Cog):
                 owner=thread.owner.mention, guideline_thread=guideline_thread.mention
             )
         )
+        
+    @commands.command(name="close")
+    async def thread_close(self, ctx: commands.Context):
+        if ctx.channel.type != ChannelType.public_thread:
+            return
+        
+        await ctx.channel.edit(archived=True)
+        
 
 
 async def setup(bot: Bot):
