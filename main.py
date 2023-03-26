@@ -8,14 +8,21 @@ intents.typing = False
 
 
 class Bot(commands.Bot):
-    def __init__(self, prefix: str, sync_tree: bool, extensions: tuple(str)):
+    def __init__(
+        self,
+        prefix: str,
+        sync_tree: bool,
+        extensions: tuple(str),
+        limit_time: dict[str, int],
+    ):
         super().__init__(command_prefix=prefix, intents=intents)
 
-        self.extensions = extensions
+        self._extensions = extensions
         self.tree_sync = sync_tree
+        self.limit_time = limit_time
 
     async def setup_hook(self) -> None:
-        for cog in self.extensions:
+        for cog in self._extensions:
             await self.load_extension(f"cogs.{cog}")
 
         if self.tree_sync:
