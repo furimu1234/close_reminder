@@ -42,8 +42,8 @@ class Close_Reminder(commands.Cog):
         if not (thread := payload.thread):
             thread = parent.get_thread(payload.thread_id)
 
-        # 自動アーカイブの時間が一日以上
-        if thread.auto_archive_duration > 1440:
+        # 自動アーカイブの時間が1日以内なら以降何もしない
+        if thread.auto_archive_duration <= 1440:
             return
 
         if not thread.archived:
@@ -71,7 +71,7 @@ class Close_Reminder(commands.Cog):
 
         await thread.send(
             messages["remind_message"].format(
-                owner=thread.owner.mention, gideline_thread=guideline_thread.mention
+                owner=thread.owner.mention, guideline_thread=guideline_thread.mention
             )
         )
 
