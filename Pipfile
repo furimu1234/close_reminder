@@ -12,3 +12,7 @@ black = "*"
 
 [requires]
 python_version = "3.11"
+
+[scripts]
+start = "python run.py"
+local = "python local.py"
