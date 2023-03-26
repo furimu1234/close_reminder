@@ -1,3 +1,3 @@
 remind_message: |
-  {owner}さん。{guideline_thread}は読みましたか？
-  解決したなら、解決の旨を記入後、クローズしてください。  
+  {owner}さん。このスレッドの内容は解決しましたか?
+  {guideline_thread}にも記載してるように、解決後はその旨を記入後、クローズしてください。
