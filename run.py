@@ -5,6 +5,6 @@ extensions = ("close_reminder",)
 
 TOKEN = os.environ.get("TOKEN")
 
-bot = Bot(prefix="pc!", sync_tree=False, extensions=extensions, limit_time={"days": 1})
+bot = Bot(prefix=".", sync_tree=False, extensions=extensions, limit_time={"days": 1})
 
 bot.run(TOKEN)
