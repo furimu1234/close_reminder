@@ -26,6 +26,7 @@ class Close_Reminder(commands.Cog):
 
         スレッドのアーカイブ期間を3日以上にしてる前提
 
+
         Parameters
         ----------
         payload : RawThreadUpdateEvent
