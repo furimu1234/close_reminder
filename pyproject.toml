@@ -3,8 +3,7 @@ name = "close-reminder"
 version = "0.1.0"
 description = ""
 authors = ["furimu1234 <enu7693@gmail.com>"]
-readme = "README.md"
-packages = [{include = "close_reminder"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.11"
