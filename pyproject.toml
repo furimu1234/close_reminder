@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "close-reminder"
+version = "0.1.0"
+description = ""
+authors = ["furimu1234 <enu7693@gmail.com>"]
+readme = "README.md"
+packages = [{include = "close_reminder"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+discord-py = "^2.3.2"
+pyyaml = "^6.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
